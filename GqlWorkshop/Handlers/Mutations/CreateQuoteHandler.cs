@@ -2,13 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using GqlWorkshop.DbModel;
-using GqlWorkshop.Gql.InputTypes;
 using GqlWorkshop.Gql.Schema;
+using GraphQL.Conventions;
 using MediatR;
 
 namespace GqlWorkshop.Handlers.Mutations
 {
-    public class CreateQuoteHandler : IRequestHandler<CreateQuoteInput, QuoteGraphType>
+    public class CreateQuoteHandler : IRequestHandler<CreateQuoteHandler.CreateQuoteInput, QuoteGraphType>
     {
         private readonly AppDbContext db;
 
@@ -29,6 +29,13 @@ namespace GqlWorkshop.Handlers.Mutations
             await db.SaveChangesAsync(cancellationToken);
 
             return new QuoteGraphType(quote);
+        }
+        
+        [InputType]
+        public class CreateQuoteInput : IRequest<QuoteGraphType>
+        {
+            public NonNull<string> Text { get; set; }
+            public NonNull<string> SaidBy { get; set; }
         }
     }
 }
