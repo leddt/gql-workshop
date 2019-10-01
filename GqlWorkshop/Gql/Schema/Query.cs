@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GqlWorkshop.DbModel;
+using GqlWorkshop.Gql.Schema.GraphTypes;
 using GraphQL.Conventions;
 
 namespace GqlWorkshop.Gql.Schema

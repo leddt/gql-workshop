@@ -2,7 +2,7 @@
 using GqlWorkshop.DbModel;
 using GraphQL.Conventions;
 
-namespace GqlWorkshop.Gql.Schema
+namespace GqlWorkshop.Gql.Schema.GraphTypes
 {
     public class CommentGraphType
     {

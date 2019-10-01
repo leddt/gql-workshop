@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GqlWorkshop.DbModel;
 using GqlWorkshop.Gql.Schema;
+using GqlWorkshop.Gql.Schema.GraphTypes;
 using GraphQL.Conventions;
 using MediatR;
 

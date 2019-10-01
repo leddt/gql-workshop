@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GqlWorkshop.DbModel;
@@ -8,7 +7,7 @@ using GraphQL.Conventions;
 using GraphQL.DataLoader;
 using MediatR;
 
-namespace GqlWorkshop.Gql.Schema
+namespace GqlWorkshop.Gql.Schema.GraphTypes
 {
     public class QuoteGraphType
     {
