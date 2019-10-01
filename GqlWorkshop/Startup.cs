@@ -6,6 +6,7 @@ using GqlWorkshop.DbModel;
 using GqlWorkshop.Gql;
 using GqlWorkshop.Gql.Schema;
 using GraphQL.Conventions;
+using GraphQL.DataLoader;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,6 +46,8 @@ namespace GqlWorkshop
 
             services.AddSingleton(CreateGraphQLEngine());
             services.AddScoped<IDependencyInjector, Injector>();
+            services.AddScoped<IUserContext, UserContext>();
+            services.AddScoped<DataLoaderContext>();
 
             services.AddMediatR(typeof(Startup).Assembly);
         }

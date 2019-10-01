@@ -12,11 +12,13 @@ namespace GqlWorkshop.Controllers
     {
         private readonly GraphQLEngine engine;
         private readonly IDependencyInjector injector;
+        private readonly IUserContext userContext;
 
-        public GraphqlController(GraphQLEngine engine, IDependencyInjector injector)
+        public GraphqlController(GraphQLEngine engine, IDependencyInjector injector, IUserContext userContext)
         {
             this.engine = engine;
             this.injector = injector;
+            this.userContext = userContext;
         }
 
         public async Task<IActionResult> Post()
@@ -28,6 +30,7 @@ namespace GqlWorkshop.Controllers
             var result = await engine
                 .NewExecutor()
                 .WithDependencyInjector(injector)
+                .WithUserContext(userContext)
                 .WithRequest(requestBody)
                 .Execute();
 
