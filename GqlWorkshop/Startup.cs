@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GqlWorkshop.DbModel;
+using GqlWorkshop.Gql;
+using GraphQL.Conventions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Query = GqlWorkshop.Gql.Schema.Query;
 
 namespace GqlWorkshop
 {
@@ -37,6 +40,16 @@ namespace GqlWorkshop
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 });
+
+            services.AddSingleton(CreateGraphQLEngine());
+            services.AddScoped<IDependencyInjector, Injector>();
+        }
+
+        private static GraphQLEngine CreateGraphQLEngine()
+        {
+            return new GraphQLEngine()
+                .WithQuery<Query>()
+                .BuildSchema();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
