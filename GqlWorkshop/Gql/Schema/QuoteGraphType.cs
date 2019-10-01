@@ -1,4 +1,7 @@
-﻿using GqlWorkshop.DbModel;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using GqlWorkshop.DbModel;
 using GraphQL.Conventions;
 
 namespace GqlWorkshop.Gql.Schema
@@ -19,5 +22,12 @@ namespace GqlWorkshop.Gql.Schema
 
         [Description("Who said this.")]
         public string SaidBy => data.SaidBy;
+
+        public IList<CommentGraphType> Comments([Inject] AppDbContext db)
+        {
+            var comments = db.Comments.Where(x => x.QuoteId == data.Id).ToList();
+
+            return comments.Select(x => new CommentGraphType(x)).ToList();
+        }
     }
 }
