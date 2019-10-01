@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GqlWorkshop.DbModel;
+using GqlWorkshop.Handlers.Queries;
 using GraphQL.Conventions;
 using GraphQL.DataLoader;
-using Microsoft.EntityFrameworkCore;
+using MediatR;
 
 namespace GqlWorkshop.Gql.Schema
 {
@@ -26,12 +27,11 @@ namespace GqlWorkshop.Gql.Schema
         [Description("Who said this.")]
         public string SaidBy => data.SaidBy;
 
-        public async Task<IList<CommentGraphType>> Comments([Inject] AppDbContext db, [Inject] DataLoaderContext loaderContext)
+        public async Task<IList<CommentGraphType>> Comments([Inject] IMediator mediator, [Inject] DataLoaderContext loaderContext)
         {
-            var loader = loaderContext.GetOrAddCollectionBatchLoader<long, Comment>("QuoteComments", async (ids, ct) => {
-                var allComments = await db.Comments.Where(x => ids.Contains(x.QuoteId)).ToListAsync(ct);
-                return allComments.ToLookup(x => x.QuoteId);
-            });
+            var loader = loaderContext.GetOrAddCollectionBatchLoader<long, Comment>(
+                nameof(GetCommentsByQuoteIds), 
+                (ids, ct) => mediator.Send(new GetCommentsByQuoteIds.Query(ids), ct));
 
             var comments = await loader.LoadAsync(data.Id);
 
