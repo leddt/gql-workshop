@@ -8,7 +8,7 @@ using MediatR;
 
 namespace GqlWorkshop.Handlers.Mutations
 {
-    public class CreateQuoteHandler : IRequestHandler<CreateQuoteHandler.CreateQuoteInput, QuoteGraphType>
+    public class CreateQuoteHandler : IRequestHandler<CreateQuoteHandler.CreateQuoteInput, CreateQuoteHandler.CreateQuotePayload>
     {
         private readonly AppDbContext db;
 
@@ -17,7 +17,7 @@ namespace GqlWorkshop.Handlers.Mutations
             this.db = db;
         }
 
-        public async Task<QuoteGraphType> Handle(CreateQuoteInput request, CancellationToken cancellationToken)
+        public async Task<CreateQuotePayload> Handle(CreateQuoteInput request, CancellationToken cancellationToken)
         {
             var quote = new Quote {
                 CreatedAt = DateTime.UtcNow,
@@ -28,14 +28,21 @@ namespace GqlWorkshop.Handlers.Mutations
             db.Quotes.Add(quote);
             await db.SaveChangesAsync(cancellationToken);
 
-            return new QuoteGraphType(quote);
+            return new CreateQuotePayload {
+                Quote = new QuoteGraphType(quote)
+            };
         }
         
         [InputType]
-        public class CreateQuoteInput : IRequest<QuoteGraphType>
+        public class CreateQuoteInput : IRequest<CreateQuotePayload>
         {
             public NonNull<string> Text { get; set; }
             public NonNull<string> SaidBy { get; set; }
+        }
+
+        public class CreateQuotePayload
+        {
+            public QuoteGraphType Quote { get; set; }
         }
     }
 }

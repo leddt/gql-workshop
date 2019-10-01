@@ -7,9 +7,11 @@ namespace GqlWorkshop.Gql.Schema
 {
     public class Mutation
     {
-        public async Task<QuoteGraphType> CreateQuote([Inject] IMediator mediator, CreateQuoteHandler.CreateQuoteInput input)
+        public async Task<CreateQuoteHandler.CreateQuotePayload> CreateQuote(
+            [Inject] IMediator mediator, 
+            NonNull<CreateQuoteHandler.CreateQuoteInput> input)
         {
-            return await mediator.Send(input);
+            return await mediator.Send(input.Value);
         }
     }
 }
