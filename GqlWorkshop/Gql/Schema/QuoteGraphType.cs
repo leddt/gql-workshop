@@ -13,7 +13,11 @@ namespace GqlWorkshop.Gql.Schema
         }
 
         public Id Id => Id.New<Quote>(data.Id);
+
+        [Description("What was said.")]
         public string Text => data.Text;
+
+        [Description("Who said this.")]
         public string SaidBy => data.SaidBy;
     }
 }
