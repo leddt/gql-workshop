@@ -12,5 +12,13 @@ namespace GqlWorkshop.Gql.Schema
             var quotes = db.Quotes.ToList();
             return quotes.Select(q => new QuoteGraphType(q)).ToList();
         }
+
+        public QuoteGraphType Quote([Inject] AppDbContext db, Id id)
+        {
+            var quoteId = long.Parse(id.IdentifierForType<Quote>());
+            var quote = db.Quotes.Find(quoteId);
+
+            return new QuoteGraphType(quote);
+        }
     }
 }
