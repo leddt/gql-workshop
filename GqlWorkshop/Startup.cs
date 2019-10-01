@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GqlWorkshop.DbModel;
 using GqlWorkshop.Gql;
+using GqlWorkshop.Gql.Schema;
 using GraphQL.Conventions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,6 +50,7 @@ namespace GqlWorkshop
         {
             return new GraphQLEngine()
                 .WithQuery<Query>()
+                .WithMutation<Mutation>()
                 .BuildSchema();
         }
 
